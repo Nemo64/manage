@@ -17,6 +17,7 @@
     <link rel="import" href="/bundles/contact/component/contact-list.html">
 
     <link rel="import" href="/bower_components/paper-fab/paper-fab.html"/>
+    <link rel="import" href="/bower_components/fab-position/fab-position.html"/>
 {% endblock links %}
 
 {% block stylesheets %}
@@ -80,7 +81,9 @@
                         <core-ajax auto url="{{ path('get_contacts') }}" handleAs="json"
                                    response="{{ polymer.var('contacts') }}"></core-ajax>
                         <contact-list data="{{ polymer.var('contacts') }}" fit></contact-list>
-                        <paper-fab icon="add"></paper-fab>
+                        <fab-position mode="floating">
+                            <paper-fab icon="add" class="bottom-fab"></paper-fab>
+                        </fab-position>
                     </core-header-panel>
                 </section>
 

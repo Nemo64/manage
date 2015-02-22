@@ -22,6 +22,7 @@
     "core-pages": "Polymer/core-pages#~0.5.5",
     "core-drawer-panel": "Polymer/core-drawer-panel#~0.5.5",
     "paper-icon-button": "Polymer/paper-icon-button#~0.5.5",
-    "paper-fab": "Polymer/paper-fab#~0.5.5"
+    "paper-fab": "Polymer/paper-fab#~0.5.5",
+    "fab-position": "Nemo64/fab-position"
   }
 }
