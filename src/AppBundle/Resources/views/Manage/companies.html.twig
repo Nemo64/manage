@@ -8,7 +8,7 @@
 {% endblock links %}
 
 {% block content %}
-    <core-header-panel fit mode="seamed">
+    <core-header-panel fit mode="{{ block('header_mode') }}">
         <core-toolbar>
             <paper-icon-button icon="menu" core-drawer-toggle></paper-icon-button>
             <div flex>Firmen</div>

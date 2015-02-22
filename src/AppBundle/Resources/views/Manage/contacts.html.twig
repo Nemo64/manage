@@ -14,7 +14,7 @@
 {% block content %}
     {% import 'Nemo64PolymerBundle::common.html.twig' as polymer %}
 
-    <core-header-panel fit mode="seamed">
+    <core-header-panel fit mode="{% block header_mode %}standard{% endblock header_mode %}">
         <core-toolbar>
             <paper-icon-button icon="menu" core-drawer-toggle></paper-icon-button>
             <div flex>Kontakte</div>
