@@ -1,0 +1,28 @@
+<link rel="import" href="/bower_components/polymer/polymer.html"/>
+<link rel="import" href="/bower_components/core-list/core-list.html"/>
+<link rel="import" href="/bower_components/paper-item/paper-item.html"/>
+
+<polymer-element name="contact-list" attributes="data">
+    <template>
+        <style>
+            .contact-list-entry {
+                height: 48px;
+                overflow: hidden;
+            }
+        </style>
+        <core-list data="{{data}}" height="{{height}}" fit>
+            <template>
+                <div class="contact-list-entry">
+                    <paper-item>
+                        {{model.name.normal}}
+                    </paper-item>
+                </div>
+            </template>
+        </core-list>
+    </template>
+    <script>
+        Polymer({
+            height: 48
+        });
+    </script>
+</polymer-element>
