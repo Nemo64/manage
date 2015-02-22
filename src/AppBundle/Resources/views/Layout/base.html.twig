@@ -5,26 +5,32 @@
 
         {% block head %}
             <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no">
-            {% javascripts 'bower_components/webcomponentsjs/webcomponents.min.js' %}
-            <script src="{{ asset_url }}"></script>
-            {% endjavascripts %}
+            <script src="/bower_components/webcomponentsjs/webcomponents.min.js"></script>
         {% endblock head %}
 
         <title>{% block title %}Welcome!{% endblock %}</title>
 
-        {% block stylesheets %}
-            {% stylesheets '@AppBundle/Resources/css/*.css' %}
-                <link rel="stylesheet" href="{{ asset_url }}" />
-            {% endstylesheets %}
-        {% endblock %}
-
         {% block links %}
+            <link rel="import" href="/bower_components/polymer/polymer.html"/>
             <link rel="import" href="/bower_components/font-roboto/roboto.html">
         {% endblock links %}
 
+        {% block stylesheets %}
+            <style>
+                html, body {
+                    font-family: 'RobotoDraft', sans-serif;
+                    font-size: 14px;
+                }
+            </style>
+        {% endblock %}
+
     </head>
-    <body fullbleed layout vertical unresolved>
-        {% block body %}{% endblock %}
+    {% flush %}
+    {# todo: use [unresolved] if the browser is not chrome >= 36 #}
+    <body fullbleed layout vertical>
+        <template is="auto-binding" id="main-template">
+            {% block body %}{% endblock %}
+        </template>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

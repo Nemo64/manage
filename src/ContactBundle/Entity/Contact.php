@@ -13,8 +13,10 @@ use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity()
- * @ORM\Table()
+ * @ORM\Entity(repositoryClass="ContactBundle\Entity\ContactRepository")
+ * @ORM\Table(indexes={
+ *  @ORM\Index(name="full_name_idx", columns={"name_last", "name_first"})
+ * })
  * @JMS\ExclusionPolicy("all")
  * @JMS\AccessType("public_method")
  */

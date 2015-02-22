@@ -14,7 +14,7 @@ class ContactController extends FOSRestController
 {
     public function getContactsAction()
     {
-        $contacts = $this->getDoctrine()->getRepository('ContactBundle:Contact')->findAll();
+        $contacts = $this->getDoctrine()->getRepository('ContactBundle:Contact')->findAllSortedByName();
 
         $view = $this->view($contacts);
 

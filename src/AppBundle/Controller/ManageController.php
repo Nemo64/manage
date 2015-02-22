@@ -11,12 +11,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class ManageController extends Controller
 {
     /**
-     * @Route("", name="homepage")
+     * @Route("contacts/", name="contacts")
      */
-    public function defaultAction()
+    public function contactsAction()
     {
-        $response = $this->render('AppBundle:Manage:default.html.twig');
-        $response->setMaxAge(60);
+        $response = $this->render('AppBundle:Manage:contacts.html.twig');
+        $response->setSharedMaxAge(60);
+        return $response;
+    }
+
+    /**
+     * @Route("companies/", name="companies")
+     */
+    public function companiesAction()
+    {
+        $response = $this->render('AppBundle:Manage:companies.html.twig');
+        $response->setSharedMaxAge(60);
         return $response;
     }
 }
