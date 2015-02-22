@@ -19,9 +19,9 @@ class ContactRepository extends EntityRepository
     public function findAllSortedByName()
     {
         $qb = $this->createQueryBuilder('contact');
-        $qb->addOrderBy('contact.name.last', 'ASC');
         $qb->addOrderBy('contact.name.first', 'ASC');
         $qb->addOrderBy('contact.name.second', 'ASC');
+        $qb->addOrderBy('contact.name.last', 'ASC');
         $qb->addOrderBy('contact.name.prefix', 'ASC');
         $qb->addOrderBy('contact.name.suffix', 'ASC');
         return $qb->getQuery()->getResult();
