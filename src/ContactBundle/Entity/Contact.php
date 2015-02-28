@@ -42,7 +42,6 @@ class Contact
      * @var Contact\Name
      *
      * @ORM\Embedded(class="ContactBundle\Entity\Contact\Name")
-     *
      * @JMS\Expose()
      *
      * @Assert\NotNull()
