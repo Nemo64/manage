@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="PersonBundle\Entity\PersonRepository")
  * @ORM\Table(indexes={
- *  @ORM\Index(name="name_idx", columns={"name__complete"})
+ *  @ORM\Index(name="name_idx", columns={"name_complete"})
  * })
  *
  * @JMS\ExclusionPolicy("all")

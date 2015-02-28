@@ -19,8 +19,8 @@ class PersonRepository extends EntityRepository
             $orderBy = array();
         }
 
-        if (!isset($orderBy['name._complete'])) {
-            $orderBy['name._complete'] = 'ASC';
+        if (!isset($orderBy['name.complete'])) {
+            $orderBy['name.complete'] = 'ASC';
         }
 
         return parent::findBy($criteria, $orderBy, $limit, $offset);
