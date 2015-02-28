@@ -13,7 +13,7 @@ use FOS\RestBundle\Controller\FOSRestController;
 
 class PersonController extends FOSRestController
 {
-    public function getPersonsAction()
+    public function getPeopleAction()
     {
         $persons = $this->getDoctrine()->getRepository('PersonBundle:Person')->findAll();
 
@@ -29,5 +29,11 @@ class PersonController extends FOSRestController
         $response = $this->handleView($view);
         $response->setMaxAge(30);
         return $response;
+    }
+
+    public function getPersonEmployedAction(Person $person)
+    {
+        $view = $this->view($person->getEmployedByCompanies());
+        return $this->handleView($view);
     }
 }

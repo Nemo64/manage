@@ -20,4 +20,11 @@ class CompanyController extends FOSRestController
         $response = $this->handleView($view);
         return $response;
     }
+
+    public function getCompanyEmployeesAction(Company $company)
+    {
+        $view = $this->view($company->getEmployees());
+        $response = $this->handleView($view);
+        return $response;
+    }
 }
