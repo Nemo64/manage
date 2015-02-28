@@ -131,6 +131,7 @@ class Name
         $this->nickname = $nickname;
         $this->prefix = $prefix;
         $this->suffix = $suffix;
+
         $this->_complete = $this->computeCompleteName();
     }
 
@@ -200,7 +201,7 @@ class Name
     {
         $hasFirstname = strlen($this->getFirst()) > 0;
         $hasLastname = strlen($this->getLast()) > 0;
-        return $hasFirstname && $hasLastname;
+        return $hasFirstname || $hasLastname;
     }
 
     /**

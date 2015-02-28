@@ -11,7 +11,7 @@ use PersonBundle\Entity\Person;
 
 class NameTest extends \PHPUnit_Framework_TestCase
 {
-    public function testNormalRepresentation()
+    public function testCompleteRepresentation()
     {
         static $nbsp = Person\Name::NO_BREAK_SPACE;
 
