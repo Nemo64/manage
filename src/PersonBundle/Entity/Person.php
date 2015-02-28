@@ -8,6 +8,7 @@
 namespace PersonBundle\Entity;
 
 
+use AppBundle\Entity\EntityFields;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Hateoas\Configuration\Annotation as Hateoas;
@@ -16,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="PersonBundle\Entity\PersonRepository")
  * @ORM\Table(indexes={
- *  @ORM\Index(name="full_name_idx", columns={"name__complete"})
+ *  @ORM\Index(name="name_idx", columns={"name__complete"})
  * })
  *
  * @JMS\ExclusionPolicy("all")
@@ -26,17 +27,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Person
 {
-    /**
-     * @var int|null
-     *
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Id()
-     * @ORM\Column(type="integer")
-     *
-     * @JMS\Expose()
-     * @JMS\ReadOnly()
-     */
-    private $id;
+    use EntityFields;
 
     /**
      * @var Person\Name
@@ -52,14 +43,6 @@ class Person
     public function __construct()
     {
 
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**
