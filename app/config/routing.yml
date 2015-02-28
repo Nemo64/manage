@@ -3,5 +3,5 @@ app:
     type:     annotation
 
 contact:
-    resource: @ContactBundle/Resources/config/rest_routing.yml
+    resource: @ContactBundle/Resources/config/routing.yml
     prefix:   /rest
