@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(indexes={
  *  @ORM\Index(name="full_name_idx", columns={"name_first", "name_last"})
  * })
+ *
  * @JMS\ExclusionPolicy("all")
  * @JMS\AccessType("public_method")
  */
@@ -28,7 +29,7 @@ class Contact
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Id()
      * @ORM\Column(type="integer")
-     * @JMS\Type("integer")
+     *
      * @JMS\Expose()
      * @JMS\ReadOnly()
      */
@@ -38,7 +39,9 @@ class Contact
      * @var Contact\Name
      *
      * @ORM\Embedded(class="ContactBundle\Entity\Contact\Name")
+     *
      * @JMS\Expose()
+     *
      * @Assert\NotNull()
      * @Assert\Valid()
      */

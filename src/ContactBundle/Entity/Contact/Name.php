@@ -36,7 +36,6 @@ class Name
      * @var string|null
      *
      * @ORM\Column(type="string", length=30, nullable=true)
-     * @JMS\Type("string")
      * @JMS\Expose()
      * @JMS\ReadOnly()
      *
@@ -49,7 +48,6 @@ class Name
      * @var string|null
      *
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @JMS\Type("string")
      * @JMS\Expose()
      * @JMS\ReadOnly()
      *
@@ -62,7 +60,6 @@ class Name
      * @var string|null
      *
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @JMS\Type("string")
      * @JMS\Expose()
      * @JMS\ReadOnly()
      *
@@ -75,7 +72,6 @@ class Name
      * @var string|null
      *
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @JMS\Type("string")
      * @JMS\Expose()
      * @JMS\ReadOnly()
      *
@@ -88,7 +84,6 @@ class Name
      * @var string|null
      *
      * @ORM\Column(type="string", length=30, nullable=true)
-     * @JMS\Type("string")
      * @JMS\Expose()
      * @JMS\ReadOnly()
      *
@@ -101,7 +96,6 @@ class Name
      * @var string|null
      *
      * @ORM\Column(type="string", length=60, nullable=true)
-     * @JMS\Type("string")
      * @JMS\Expose()
      * @JMS\ReadOnly()
      *
