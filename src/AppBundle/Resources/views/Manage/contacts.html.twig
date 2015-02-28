@@ -7,30 +7,145 @@
     <link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html"/>
 
     <link rel="import" href="/bower_components/core-ajax/core-ajax.html"/>
+    <link rel="import" href="/bower_components/core-animated-pages/core-animated-pages.html"/>
+
     <link rel="import" href="/bower_components/core-list/core-list.html"/>
     <link rel="import" href="/bower_components/paper-item/paper-item.html"/>
+    <link rel="import" href="/bower_components/core-image/core-image.html"/>
 {% endblock links %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        #contact-list core-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 8px;
+            background-color: lightgray;
+        }
+
+        #contact-detail core-image {
+            width: 128px;
+            height: 128px;
+            border-radius: 50%;
+            margin-right: 16px;
+            background-color: lightgray;
+        }
+
+        #contact-detail-card {
+            padding: .9em 1em;
+        }
+
+        #toolbar-pages {
+            margin: 0;
+        }
+
+        #toolbar-pages > section > * {
+            margin: 0 8px;
+        }
+    </style>
+{% endblock stylesheets %}
 
 {% block content %}
     {% import 'Nemo64PolymerBundle::common.html.twig' as polymer %}
 
-    <core-header-panel fit mode="{% block header_mode %}standard{% endblock header_mode %}">
-        <core-toolbar>
-            <paper-icon-button icon="menu" core-drawer-toggle></paper-icon-button>
-            <div flex>Kontakte</div>
+    <core-ajax auto url="{{ path('get_contacts') }}" handleAs="json"
+               response="{{ polymer.var('contacts') }}"></core-ajax>
+
+    <core-header-panel fit mode="{{ block('header_mode') }}">
+        <core-toolbar hero hero-id="toolbar">
+            <core-animated-pages id="toolbar-pages"
+                                 fit selected="{{ polymer.var('contactPage') }}"
+                                 transitions="hero-transition cross-fade">
+
+                <section layout horizontal center>
+                    <paper-icon-button icon="menu" core-drawer-toggle
+                                       cross-fade></paper-icon-button>
+                    <div flex hero hero-id="header">Kontakte</div>
+                </section>
+                <section layout horizontal center>
+                    <paper-icon-button icon="arrow-back" on-tap="{{ polymer.var('selectContact') }}"
+                                       cross-fade></paper-icon-button>
+                    <div flex hero hero-id="header">{{ polymer.var('selectedContact.name.normal') }}</div>
+                </section>
+
+            </core-animated-pages>
         </core-toolbar>
 
-        <section id="contacts">
-            <core-ajax auto url="{{ path('get_contacts') }}" handleAs="json"
-                       response="{{ polymer.var('contacts') }}"></core-ajax>
+        <core-animated-pages fit selected="{{ polymer.var('contactPage') }}"
+                             transitions="hero-transition cross-fade">
 
-            <core-list data="{{ polymer.var('contacts') }}" height="48" fit>
-                <template>
-                    <paper-item>
-                        {{ polymer.var('contacts[index].name.normal') }}
-                    </paper-item>
-                </template>
-            </core-list>
-        </section>
+            <section id="contact-list">
+
+                <core-list fit data="{{ polymer.var('contacts') }}">
+                    <template>
+                        <paper-item layout horizontal noink on-tap="{{ polymer.var('selectContact') }}"
+                                    data-index="{{ polymer.var('index') }}">
+
+                            <core-image sizing="cover"
+                                        src="http://lorempixel.com/128/128/?{{ polymer.var('model.id') }}"
+                                        hero?="{{ polymer.var('selectedContact === model') }}"
+                                        hero-id="contact-{{ polymer.var('model.id') }}-image"
+                                        cross-fade?="{{ polymer.var('selectedContact !== model') }}">
+                            </core-image>
+                            <div hero?="{{ polymer.var('selectedContact === model') }}"
+                                 hero-id="contact-{{ polymer.var('model.id') }}-name"
+                                 cross-fade?="{{ polymer.var('selectedContact !== model') }}">
+                                {{ polymer.var('model.name.normal') }}
+                            </div>
+
+                        </paper-item>
+                    </template>
+                </core-list>
+
+            </section>
+
+            <section id="contact-detail" on-tap="{{ polymer.var('selectContact') }}">
+
+                <div id="contact-detail-card" fit>
+                    <div layout horizontal>
+
+                        <core-image sizing="cover"
+                                    src="http://lorempixel.com/128/128/?{{ polymer.var('selectedContact.id') }}"
+                                    hero hero-id="contact-{{ polymer.var('selectedContact.id') }}-image">
+                        </core-image>
+                        <div layout vertical start>
+                            <div layout horizontal>
+                                <h1 hero hero-id="contact-{{ polymer.var('selectedContact.id') }}-name">
+                                    {{ polymer.var('selectedContact.name.normal') }}
+                                </h1>
+                            </div>
+                            <p cross-fade>
+                                Dies ist bestimmt eine tolle Person
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </section>
+
+        </core-animated-pages>
     </core-header-panel>
 {% endblock content %}
+
+{% block javascripts %}
+    <script>
+        var template = document.querySelector('#main-template');
+        template.contactPage = 0;
+        template.selectedContact = null;
+        template.selectContact = function (e) {
+            var contact = e.target.templateInstance.model.model_;
+            console.log(contact);
+            if (this.contactPage === 0 && contact) {
+                this.selectedContact = contact;
+                this.contactPage = 1;
+                document.body.classList.add('detail-page');
+            } else {
+                this.contactPage = 0;
+                document.body.classList.remove('detail-page');
+            }
+        }
+    </script>
+{% endblock javascripts %}
