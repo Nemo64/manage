@@ -30,7 +30,7 @@ class Name
      *
      * @see http://www.regular-expressions.info/unicode.html#category
      */
-    const EXPR_VALIDATE = '/^[\p{L}\p{M}\p{Sk}\p{Zs}]*$/u';
+    const EXPR_VALIDATE = '/^[^\p{C}\p{P}]*$/u';
 
     /**
      * @var string|null
@@ -105,15 +105,31 @@ class Name
     private $nickname;
 
     /**
-     * Cache value for the complete name. It makes database queries easier and prevents unneeded recalculation.
-     *
      * @var string
      *
      * @ORM\Column(type="string", length=240)
-     * @JMS\AccessType("property")
-     * @JMS\Exclude()
+     * @JMS\Expose()
+     * @JMS\ReadOnly()
      */
-    private $_complete;
+    private $complete;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=240)
+     * @JMS\Expose()
+     * @JMS\ReadOnly()
+     */
+    private $professional;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=240)
+     * @JMS\Expose()
+     * @JMS\ReadOnly()
+     */
+    private $personal;
 
     /**
      * @param null|string $last
@@ -132,7 +148,9 @@ class Name
         $this->prefix = $prefix;
         $this->suffix = $suffix;
 
-        $this->_complete = $this->computeCompleteName();
+        $this->complete = $this->computeCompleteName();
+        $this->professional = $this->computeProfessionalName();
+        $this->personal = $this->computePersonalName();
     }
 
     /**
@@ -240,33 +258,9 @@ class Name
     }
 
     /**
-     * Creates a representation that is normally used.
-     * The names will be included in the order from first to last.
-     * If the user has no real name, the nickname will be used.
-     *
-     * @JMS\VirtualProperty()
-     *
-     * @return string|null
-     * @see Name::hasRealName
-     * @see Name::getNickname
-     */
-    public function getComplete()
-    {
-        return $this->_complete;
-    }
-
-    /**
-     * Creates a professional representation of this name.
-     * It will have the lastname in front of the other names and separates them using a comma
-     * If the user has no real name, the nickname will be used.
-     *
-     * @JMS\VirtualProperty()
-     *
      * @return null|string
-     * @see Name::hasRealName
-     * @see Name::getNickname
      */
-    public function getProfessional()
+    protected function computeProfessionalName()
     {
         if ($this->isEmpty()) {
             return null;
@@ -298,9 +292,47 @@ class Name
     }
 
     /**
-     * Returns the nickname if present. If not, it will generate the normal name representation.
+     * @return string|null
+     */
+    protected function computePersonalName()
+    {
+        if (!$this->hasNickname()) {
+            return $this->getComplete();
+        }
+
+        return $this->getNickname();
+    }
+
+    /**
+     * Creates a representation that is normally used.
+     * The names will be included in the order from first to last.
+     * If the user has no real name, the nickname will be used.
      *
-     * @JMS\VirtualProperty()
+     * @return string|null
+     * @see Name::hasRealName
+     * @see Name::getNickname
+     */
+    public function getComplete()
+    {
+        return $this->complete;
+    }
+
+    /**
+     * Creates a professional representation of this name.
+     * It will have the lastname in front of the other names and separates them using a comma
+     * If the user has no real name, the nickname will be used.
+     *
+     * @return null|string
+     * @see Name::hasRealName
+     * @see Name::getNickname
+     */
+    public function getProfessional()
+    {
+        return $this->professional;
+    }
+
+    /**
+     * Returns the nickname if present. If not, it will generate the normal name representation.
      *
      * @return null|string
      * @see getComplete::getFull
@@ -308,11 +340,7 @@ class Name
      */
     public function getPersonal()
     {
-        if (!$this->hasNickname()) {
-            return $this->getComplete();
-        }
-
-        return $this->getNickname();
+        return $this->personal;
     }
 
     /**
