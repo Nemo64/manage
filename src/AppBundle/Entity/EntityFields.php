@@ -26,6 +26,6 @@ trait EntityFields
 
     public function getId()
     {
-        return $this->getId();
+        return $this->id;
     }
 }
