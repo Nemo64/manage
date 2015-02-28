@@ -1,3 +1,6 @@
 {% macro var(name) %}
     {{- '{{' ~ name ~ '}}' -}}
 {% endmacro var %}
+{% macro varIn(alias, name) %}
+    {{- '{{' ~ alias ~ ' in ' ~ name ~ '}}' -}}
+{% endmacro varIn %}

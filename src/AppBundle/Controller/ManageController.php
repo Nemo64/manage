@@ -11,11 +11,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class ManageController extends Controller
 {
     /**
-     * @Route("contacts/", name="contacts")
+     * @Route("people/", name="people")
      */
     public function contactsAction()
     {
-        $response = $this->render('AppBundle:Manage:contacts.html.twig');
+        $response = $this->render('AppBundle:Manage:people.html.twig');
         $response->setSharedMaxAge(60);
         return $response;
     }

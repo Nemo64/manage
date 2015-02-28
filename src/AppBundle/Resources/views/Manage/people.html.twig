@@ -6,7 +6,7 @@
     <link rel="import" href="/bower_components/core-toolbar/core-toolbar.html">
     <link rel="import" href="/bower_components/paper-icon-button/paper-icon-button.html"/>
 
-    <link rel="import" href="/bower_components/core-ajax/core-ajax.html"/>
+    <link rel="import" href="/bower_components/hateoas-ajax/hateoas-ajax.html"/>
     <link rel="import" href="/bower_components/core-animated-pages/core-animated-pages.html"/>
 
     <link rel="import" href="/bower_components/core-list/core-list.html"/>
@@ -50,8 +50,8 @@
 {% block content %}
     {% import 'Nemo64PolymerBundle::common.html.twig' as polymer %}
 
-    <core-ajax auto url="{{ path('get_persons') }}" handleAs="json"
-               response="{{ polymer.var('persons') }}"></core-ajax>
+    <hateoas-ajax auto url="{{ path('get_people') }}" handleAs="json"
+               response="{{ polymer.var('people') }}"></hateoas-ajax>
 
     <core-header-panel fit mode="{{ block('header_mode') }}">
         <core-toolbar hero hero-id="toolbar">
@@ -67,7 +67,7 @@
                 <section layout horizontal center>
                     <paper-icon-button icon="arrow-back" on-tap="{{ polymer.var('selectPerson') }}"
                                        cross-fade></paper-icon-button>
-                    <div flex hero hero-id="header">{{ polymer.var('selectedPerson.name.normal') }}</div>
+                    <div flex hero hero-id="header">{{ polymer.var('selectedPerson.name.complete') }}</div>
                 </section>
 
             </core-animated-pages>
@@ -78,21 +78,23 @@
 
             <section id="person-list">
 
-                <core-list fit data="{{ polymer.var('persons') }}">
+                <core-list fit data="{{ polymer.var('people') }}">
                     <template>
-                        <paper-item layout horizontal noink on-tap="{{ polymer.var('selectPerson') }}"
+                        <paper-item noink on-tap="{{ polymer.var('selectPerson') }}"
                                     data-index="{{ polymer.var('index') }}">
 
-                            <core-image sizing="cover"
-                                        src="http://lorempixel.com/128/128/?{{ polymer.var('model.id') }}"
-                                        hero?="{{ polymer.var('selectedPerson === model') }}"
-                                        hero-id="person-{{ polymer.var('model.id') }}-image"
-                                        cross-fade?="{{ polymer.var('selectedPerson !== model') }}">
-                            </core-image>
-                            <div hero?="{{ polymer.var('selectedPerson === model') }}"
-                                 hero-id="person-{{ polymer.var('model.id') }}-name"
-                                 cross-fade?="{{ polymer.var('selectedPerson !== model') }}">
-                                {{ polymer.var('model.name.normal') }}
+                            <div flex layout horizontal center>
+                                <core-image sizing="cover"
+                                            src="http://lorempixel.com/128/128/?{{ polymer.var('model_.id') }}"
+                                            hero?="{{ polymer.var('selectedPerson === model_') }}"
+                                            hero-id="person-{{ polymer.var('model_.id') }}-image"
+                                            cross-fade?="{{ polymer.var('selectedPerson !== model_') }}">
+                                </core-image>
+                                <div hero?="{{ polymer.var('selectedPerson === model_') }}"
+                                     hero-id="person-{{ polymer.var('model_.id') }}-name"
+                                     cross-fade?="{{ polymer.var('selectedPerson !== model_') }}">
+                                    {{ polymer.var('model_.name.complete') }}
+                                </div>
                             </div>
 
                         </paper-item>
@@ -113,12 +115,17 @@
                         <div layout vertical start>
                             <div layout horizontal>
                                 <h1 hero hero-id="person-{{ polymer.var('selectedPerson.id') }}-name">
-                                    {{ polymer.var('selectedPerson.name.normal') }}
+                                    {{ polymer.var('selectedPerson.name.complete') }}
                                 </h1>
                             </div>
-                            <p cross-fade>
-                                Dies ist bestimmt eine tolle Person
-                            </p>
+                            <div cross-fade>
+                                Firmen:
+                                <ul>
+                                    <template repeat="{{ polymer.varIn('company', 'selectedPerson.employedByCompanies') }}">
+                                        <li>{{ polymer.var('company.name') }}</li>
+                                    </template>
+                                </ul>
+                            </div>
                         </div>
 
                     </div>
@@ -133,8 +140,11 @@
 {% block javascripts %}
     <script>
         var template = document.querySelector('#main-template');
+
         template.personPage = 0;
+
         template.selectedPerson = null;
+
         template.selectPerson = function (e) {
             var person = e.target.templateInstance.model.model_;
             console.log(person);

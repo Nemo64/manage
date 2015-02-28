@@ -84,3 +84,6 @@ fos_rest:
 
     serializer:
         serialize_null: true
+
+parameters:
+    jms_serializer.serialized_name_annotation_strategy.class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy
