@@ -13,18 +13,32 @@ use Doctrine\ORM\EntityRepository;
 
 class ContactRepository extends EntityRepository
 {
-    /**
-     * @return Contact[]
-     */
-    public function findAllSortedByName()
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        $qb = $this->createQueryBuilder('contact');
-        $qb->addOrderBy('contact.name.first', 'ASC');
-        $qb->addOrderBy('contact.name.second', 'ASC');
-        $qb->addOrderBy('contact.name.last', 'ASC');
-        $qb->addOrderBy('contact.name.prefix', 'ASC');
-        $qb->addOrderBy('contact.name.suffix', 'ASC');
-        return $qb->getQuery()->getResult();
-    }
+        if ($orderBy === null) {
+            $orderBy = array();
+        }
 
+        if (!isset($orderBy['name.first'])) {
+            $orderBy['name.first'] = 'ASC';
+        }
+
+        if (!isset($orderBy['name.second'])) {
+            $orderBy['name.second'] = 'ASC';
+        }
+
+        if (!isset($orderBy['name.last'])) {
+            $orderBy['name.last'] = 'ASC';
+        }
+
+        if (!isset($orderBy['name.prefix'])) {
+            $orderBy['name.prefix'] = 'ASC';
+        }
+
+        if (!isset($orderBy['name.suffix'])) {
+            $orderBy['name.suffix'] = 'ASC';
+        }
+
+        return parent::findBy($criteria, $orderBy, $limit, $offset);
+    }
 }

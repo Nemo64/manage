@@ -8,18 +8,26 @@
 namespace ContactBundle\Controller;
 
 
+use ContactBundle\Entity\Contact;
 use FOS\RestBundle\Controller\FOSRestController;
 
 class ContactController extends FOSRestController
 {
     public function getContactsAction()
     {
-        $contacts = $this->getDoctrine()->getRepository('ContactBundle:Contact')->findAllSortedByName();
+        $contacts = $this->getDoctrine()->getRepository('ContactBundle:Contact')->findAll();
 
         $view = $this->view($contacts);
-
         $response = $this->handleView($view);
-        $response->setSharedMaxAge(10);
+        $response->setSharedMaxAge(30);
+        return $response;
+    }
+
+    public function getContactAction(Contact $contact)
+    {
+        $view = $this->view($contact);
+        $response = $this->handleView($view);
+        $response->setMaxAge(30);
         return $response;
     }
 }
