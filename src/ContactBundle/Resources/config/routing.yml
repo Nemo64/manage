@@ -1,4 +1,0 @@
-contact:
-  type:     rest
-  resource: @ContactBundle/Controller/ContactController.php
-  defaults: { _format: json }

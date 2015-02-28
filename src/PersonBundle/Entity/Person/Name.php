@@ -6,7 +6,7 @@
  * Time: 03:18
  */
 
-namespace ContactBundle\Entity\Contact;
+namespace PersonBundle\Entity\Person;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
@@ -105,6 +105,17 @@ class Name
     private $nickname;
 
     /**
+     * Cache value for the complete name. It makes database queries easier and prevents unneeded recalculation.
+     *
+     * @var string
+     *
+     * @ORM\Column(type="string", length=240)
+     * @JMS\AccessType("property")
+     * @JMS\Exclude()
+     */
+    private $_complete;
+
+    /**
      * @param null|string $last
      * @param null|string $first
      * @param null|string $second
@@ -120,6 +131,7 @@ class Name
         $this->nickname = $nickname;
         $this->prefix = $prefix;
         $this->suffix = $suffix;
+        $this->_complete = $this->computeCompleteName();
     }
 
     /**
@@ -150,7 +162,7 @@ class Name
      */
     public function __toString()
     {
-        return $this->getNormal() ?: "[invalid name]";
+        return $this->getComplete() ?: "[invalid name]";
     }
 
     /**
@@ -202,18 +214,11 @@ class Name
     }
 
     /**
-     * Creates a representation that is normally used.
-     * The names will be included in the order from first to last.
-     * If the user has no real name, the nickname will be used.
+     * Computes the complete name.
      *
-     * @JMS\VirtualProperty()
-     *
-     * @return string|null
-     * @see Name::hasRealName
-     * @see Name::getNickname
-     * @todo the name is not as nice as "professional" or "personal"
+     * @return null|string
      */
-    public function getNormal()
+    protected function computeCompleteName()
     {
         if ($this->isEmpty()) {
             return null;
@@ -231,6 +236,22 @@ class Name
             $this->getLast(),
             $this->getSuffix()
         ));
+    }
+
+    /**
+     * Creates a representation that is normally used.
+     * The names will be included in the order from first to last.
+     * If the user has no real name, the nickname will be used.
+     *
+     * @JMS\VirtualProperty()
+     *
+     * @return string|null
+     * @see Name::hasRealName
+     * @see Name::getNickname
+     */
+    public function getComplete()
+    {
+        return $this->_complete;
     }
 
     /**
@@ -281,13 +302,13 @@ class Name
      * @JMS\VirtualProperty()
      *
      * @return null|string
-     * @see Name::getNormal
+     * @see getComplete::getFull
      * @see Name::hasNickname
      */
     public function getPersonal()
     {
         if (!$this->hasNickname()) {
-            return $this->getNormal();
+            return $this->getComplete();
         }
 
         return $this->getNickname();

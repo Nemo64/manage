@@ -1,9 +1,9 @@
 <?php
 
-namespace ContactBundle;
+namespace PersonBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class ContactBundle extends Bundle
+class PersonBundle extends Bundle
 {
 }

@@ -6,14 +6,14 @@
  * Time: 17:13
  */
 
-namespace ContactBundle\DataFixtures\ORM;
+namespace PersonBundle\DataFixtures\ORM;
 
 
-use ContactBundle\Entity\Contact;
+use PersonBundle\Entity\Person;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadContactData implements FixtureInterface
+class LoadPersonData implements FixtureInterface
 {
     /**
      * Load data fixtures with the passed EntityManager
@@ -1026,9 +1026,9 @@ class LoadContactData implements FixtureInterface
         );
 
         foreach ($names as $name) {
-            $contact = new Contact();
-            $contact->setName(Contact\Name::fromString($name));
-            $manager->persist($contact);
+            $person = new Person();
+            $person->setName(Person\Name::fromString($name));
+            $manager->persist($person);
         }
 
         $manager->flush();

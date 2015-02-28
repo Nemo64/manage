@@ -5,7 +5,7 @@
  * Date: 15.02.15
  * Time: 02:54
  */
-namespace ContactBundle\Entity;
+namespace PersonBundle\Entity;
 
 
 use Doctrine\ORM\Mapping as ORM;
@@ -14,17 +14,17 @@ use Hateoas\Configuration\Annotation as Hateoas;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="ContactBundle\Entity\ContactRepository")
+ * @ORM\Entity(repositoryClass="PersonBundle\Entity\PersonRepository")
  * @ORM\Table(indexes={
- *  @ORM\Index(name="full_name_idx", columns={"name_first", "name_last"})
+ *  @ORM\Index(name="full_name_idx", columns={"name__complete"})
  * })
  *
  * @JMS\ExclusionPolicy("all")
  * @JMS\AccessType("public_method")
  *
- * @Hateoas\Relation("self", href=@Hateoas\Route("get_contact", parameters={"contact": "expr(object.getId())"}))
+ * @Hateoas\Relation("self", href=@Hateoas\Route("get_person", parameters={"person": "expr(object.getId())"}))
  */
-class Contact
+class Person
 {
     /**
      * @var int|null
@@ -39,9 +39,9 @@ class Contact
     private $id;
 
     /**
-     * @var Contact\Name
+     * @var Person\Name
      *
-     * @ORM\Embedded(class="ContactBundle\Entity\Contact\Name")
+     * @ORM\Embedded(class="PersonBundle\Entity\Person\Name")
      * @JMS\Expose()
      *
      * @Assert\NotNull()
@@ -63,7 +63,7 @@ class Contact
     }
 
     /**
-     * @return Contact\Name
+     * @return Person\Name
      */
     public function getName()
     {
@@ -71,9 +71,9 @@ class Contact
     }
 
     /**
-     * @param Contact\Name $name
+     * @param Person\Name $name
      */
-    public function setName(Contact\Name $name)
+    public function setName(Person\Name $name)
     {
         $this->name = $name;
     }
