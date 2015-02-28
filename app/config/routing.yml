@@ -1,7 +1,11 @@
+company:
+    resource: "@CompanyBundle/Resources/config/routing.yml"
+    prefix:   /rest
+
+contact:
+    resource: "@PersonBundle/Resources/config/routing.yml"
+    prefix:   /rest
+
 app:
     resource: @AppBundle/Controller/
     type:     annotation
-
-contact:
-    resource: @PersonBundle/Resources/config/routing.yml
-    prefix:   /rest

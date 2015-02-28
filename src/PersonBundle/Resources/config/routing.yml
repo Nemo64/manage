@@ -1,4 +1,3 @@
 person:
-  type:     rest
-  resource: @PersonBundle/Controller/PersonController.php
-  defaults: { _format: json }
+    type:     rest
+    resource: @PersonBundle/Controller/PersonController.php
