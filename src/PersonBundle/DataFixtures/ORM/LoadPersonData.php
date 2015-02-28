@@ -9,11 +9,12 @@
 namespace PersonBundle\DataFixtures\ORM;
 
 
-use PersonBundle\Entity\Person;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\DataFixtures\FixtureInterface;
+use PersonBundle\Entity\Person;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class LoadPersonData implements FixtureInterface
+class LoadPersonData implements FixtureInterface, DependentFixtureInterface
 {
     /**
      * Load data fixtures with the passed EntityManager
@@ -1025,12 +1026,34 @@ class LoadPersonData implements FixtureInterface
             "Kristyn Fields",
         );
 
-        foreach ($names as $name) {
+        $companies = $manager->getRepository('CompanyBundle:Company')->findAll();
+
+        foreach ($names as $index => $name) {
             $person = new Person();
             $person->setName(Person\Name::fromString($name));
+
+            $person->addEmployedByCompany($companies[$index % count($companies)]);
+            // every so often add another company
+            if ($index % 23 === 0) {
+                $person->addEmployedByCompany($companies[$index / 23 % count($companies)]);
+            }
+
             $manager->persist($person);
         }
 
         $manager->flush();
+    }
+
+    /**
+     * This method must return an array of fixtures classes
+     * on which the implementing class depends on
+     *
+     * @return array
+     */
+    function getDependencies()
+    {
+        return array(
+            'CompanyBundle\DataFixtures\ORM\LoadCompanyData'
+        );
     }
 }
