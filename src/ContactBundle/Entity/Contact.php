@@ -10,6 +10,7 @@ namespace ContactBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Hateoas\Configuration\Annotation as Hateoas;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -20,6 +21,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @JMS\ExclusionPolicy("all")
  * @JMS\AccessType("public_method")
+ *
+ * @Hateoas\Relation("self", href=@Hateoas\Route("get_contact", parameters={"contact": "expr(object.getId())"}))
  */
 class Contact
 {
