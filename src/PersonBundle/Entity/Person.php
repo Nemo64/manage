@@ -41,8 +41,8 @@ class Person
      * @var Person\Name
      *
      * @ORM\Embedded(class="PersonBundle\Entity\Person\Name")
+     * @JMS\Type("PersonBundle\Entity\Person\Name")
      * @JMS\Expose()
-     * @JMS\ReadOnly()
      *
      * @Assert\NotNull()
      * @Assert\Valid()

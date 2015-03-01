@@ -77,6 +77,10 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
+jms_di_extra:
+    locations:
+        directories: ["%kernel.root_dir%/../src"]
+
 fos_rest:
     routing_loader:
         default_format: json
@@ -95,3 +99,4 @@ services:
 
     jms_serializer.object_constructor:
         alias: jms_serializer.doctrine_object_constructor
+        public: false

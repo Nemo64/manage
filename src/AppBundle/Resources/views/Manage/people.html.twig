@@ -53,7 +53,7 @@
     {% import 'Nemo64PolymerBundle::common.html.twig' as polymer %}
 
     <hateoas-ajax auto url="{{ path('get_people') }}" handleAs="json"
-               response="{{ polymer.var('people') }}"></hateoas-ajax>
+                  response="{{ polymer.var('people') }}"></hateoas-ajax>
 
     <core-header-panel fit mode="{{ block('header_mode') }}">
         <core-toolbar hero hero-id="toolbar">
@@ -123,13 +123,38 @@
                             <div cross-fade>
                                 Firmen:
                                 <ul>
-                                    <template repeat="{{ polymer.varIn('company', 'selectedPerson.employedByCompanies') }}">
+                                    <template
+                                            repeat="{{ polymer.varIn('company', 'selectedPerson.employedByCompanies') }}">
                                         <li>{{ polymer.var('company.name') }}</li>
                                     </template>
                                 </ul>
                             </div>
-                            <form cross-fade action="" on-submit="{{ polymer.var('submitPerson') }}">
-                                <paper-input label="Freitext" value="{{ polymer.var('selectedPerson.freeText') }}"></paper-input>
+                            <form cross-fade layout vertical
+                                  action="" on-submit="{{ polymer.var('submitPerson') }}">
+                                <div>
+                                    <paper-input label="Freitext"
+                                                 value="{{ polymer.var('selectedPerson.freeText') }}"></paper-input>
+                                </div>
+                                <div>
+                                    <paper-input label="Prefix"
+                                                 value="{{ polymer.var('selectedPerson.name.prefix') }}"></paper-input>
+                                </div>
+                                <div>
+                                    <paper-input label="Vorname"
+                                                 value="{{ polymer.var('selectedPerson.name.first') }}"></paper-input>
+                                    <paper-input label="Zweiter Vorname"
+                                                 value="{{ polymer.var('selectedPerson.name.second') }}"></paper-input>
+                                    <paper-input label="Nachname"
+                                                 value="{{ polymer.var('selectedPerson.name.last') }}"></paper-input>
+                                </div>
+                                <div>
+                                    <paper-input label="Suffix"
+                                                 value="{{ polymer.var('selectedPerson.name.suffix') }}"></paper-input>
+                                </div>
+                                <div>
+                                    <paper-input label="Nickname"
+                                                 value="{{ polymer.var('selectedPerson.name.nickname') }}"></paper-input>
+                                </div>
                                 <button type="submit"> submit</button>
                             </form>
                         </div>
