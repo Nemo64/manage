@@ -3,6 +3,9 @@ services:
 #        class: Nemo64\RestHelperBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]
 
-  nemo64_rest_helper.jms:
-      class: Nemo64\RestHelperBundle\Service\JmsSerializerRestHelper
-      arguments: [@jms_serializer, @validator, @doctrine.orm.entity_manager]
+    rest_helper.jms:
+        class: Nemo64\RestHelperBundle\Service\JmsSerializerRestHelper
+        arguments: [@jms_serializer, @validator, @doctrine.orm.entity_manager]
+
+    rest_helper:
+        alias: rest_helper.jms
