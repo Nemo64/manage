@@ -26,6 +26,7 @@ class AppKernel extends Kernel
             new AppBundle\AppBundle(),
             new PersonBundle\PersonBundle(),
             new CompanyBundle\CompanyBundle(),
+            new Nemo64\RestHelperBundle\Nemo64RestHelperBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

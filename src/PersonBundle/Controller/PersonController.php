@@ -24,8 +24,7 @@ class PersonController extends FOSRestController
     {
         $persons = $this->getDoctrine()->getRepository('PersonBundle:Person')->findAll();
 
-        $view = $this->view($persons);
-        return $this->handleView($view);
+        return $this->view($persons);
     }
 
     /**
@@ -34,28 +33,19 @@ class PersonController extends FOSRestController
      */
     public function getPersonAction(Person $person)
     {
-        $view = $this->view($person);
-        return $this->handleView($view);
+        return $this->view($person);
     }
 
     /**
      * @param Person $person
+     * @param Request $request
      * @return Response
      */
     public function putPersonAction(Person $person, Request $request)
     {
-        $requestBody = json_decode($request->getContent(), true);
-        $json = json_encode(array_merge($requestBody, array('id' => $person->getId())));
-        $person = $this->get('serializer')->deserialize($json, get_class($person), $request->get('_format'));
-        $violations = $this->get('validator')->validate($person);
-
-        if (count($violations) > 0) {
-            $view = $this->view($violations, Response::HTTP_BAD_REQUEST);
-            return $this->handleView($view);
-        }
-
-        $this->getDoctrine()->getManager()->flush();
-        return new Response('', Response::HTTP_ACCEPTED);
+        $restHelper = $this->get('nemo64_rest_helper.jms');
+        $restHelper->processPut($person, $request);
+        return $restHelper->validateAndCreateResponse($person, true);
     }
 
     /**
@@ -64,7 +54,8 @@ class PersonController extends FOSRestController
      */
     public function getPersonEmployedAction(Person $person)
     {
-        $view = $this->view($person->getEmployedByCompanies());
-        return $this->handleView($view);
+        $companies = $person->getEmployedByCompanies();
+
+        return $this->view($companies);
     }
 }
