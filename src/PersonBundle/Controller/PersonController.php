@@ -43,9 +43,18 @@ class PersonController extends FOSRestController
      */
     public function putPersonAction(Person $person, Request $request)
     {
-        $restHelper = $this->get('nemo64_rest_helper.jms');
-        $restHelper->processPut($person, $request);
-        return $restHelper->validateAndCreateResponse($person, true);
+        $this->get('rest_helper')->processPut($person, $request);
+        return $this->get('rest_helper')->validateAndCreateResponse($person, true);
+    }
+
+    /**
+     * @param Person $person
+     * @return Response
+     */
+    public function deletePersonAction(Person $person)
+    {
+        $this->getDoctrine()->getManager()->remove($person);
+        return $this->get('rest_helper')->validateAndCreateResponse($person, true);
     }
 
     /**
