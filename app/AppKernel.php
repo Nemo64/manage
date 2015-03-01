@@ -20,6 +20,8 @@ class AppKernel extends Kernel
             new FOS\RestBundle\FOSRestBundle(),
             new Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle(),
             new Nemo64\PolymerBundle\Nemo64PolymerBundle(),
+            new JMS\DiExtraBundle\JMSDiExtraBundle($this),
+            new JMS\AopBundle\JMSAopBundle(),
 
             new AppBundle\AppBundle(),
             new PersonBundle\PersonBundle(),

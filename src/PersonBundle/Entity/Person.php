@@ -42,6 +42,7 @@ class Person
      *
      * @ORM\Embedded(class="PersonBundle\Entity\Person\Name")
      * @JMS\Expose()
+     * @JMS\ReadOnly()
      *
      * @Assert\NotNull()
      * @Assert\Valid()
@@ -57,6 +58,14 @@ class Person
      * @JMS\AccessType("property")
      */
     private $employedByCompanies;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="text")
+     * @JMS\Expose()
+     */
+    private $freeText;
 
     public function __construct()
     {
@@ -117,5 +126,21 @@ class Person
 
         $company->removeEmployee($this);
         return true;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFreeText()
+    {
+        return $this->freeText;
+    }
+
+    /**
+     * @param string $freeText
+     */
+    public function setFreeText($freeText)
+    {
+        $this->freeText = $freeText;
     }
 }

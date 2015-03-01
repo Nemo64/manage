@@ -12,6 +12,8 @@
     <link rel="import" href="/bower_components/core-list/core-list.html"/>
     <link rel="import" href="/bower_components/paper-item/paper-item.html"/>
     <link rel="import" href="/bower_components/core-image/core-image.html"/>
+
+    <link rel="import" href="/bower_components/paper-input/paper-input.html"/>
 {% endblock links %}
 
 {% block stylesheets %}
@@ -103,7 +105,7 @@
 
             </section>
 
-            <section id="person-detail" on-tap="{{ polymer.var('selectPerson') }}">
+            <section id="person-detail">
 
                 <div id="person-detail-card" fit>
                     <div layout horizontal>
@@ -126,6 +128,10 @@
                                     </template>
                                 </ul>
                             </div>
+                            <form cross-fade action="" on-submit="{{ polymer.var('submitPerson') }}">
+                                <paper-input label="Freitext" value="{{ polymer.var('selectedPerson.freeText') }}"></paper-input>
+                                <button type="submit"> submit</button>
+                            </form>
                         </div>
 
                     </div>
@@ -156,6 +162,13 @@
                 this.personPage = 0;
                 document.body.classList.remove('detail-page');
             }
-        }
+        };
+
+        // TODO put this into a component
+        template.submitPerson = function (e) {
+            e.preventDefault();
+
+            this.selectedPerson.putSelf(this.selectedPerson);
+        };
     </script>
 {% endblock javascripts %}

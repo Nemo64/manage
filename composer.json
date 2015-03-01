@@ -23,7 +23,8 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "jms/serializer-bundle": "0.13.*",
         "friendsofsymfony/rest-bundle": "~1.5",
-        "willdurand/hateoas-bundle": "0.4.*"
+        "willdurand/hateoas-bundle": "0.4.*",
+        "jms/di-extra-bundle": "~1.5"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",
