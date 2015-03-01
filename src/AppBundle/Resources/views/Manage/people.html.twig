@@ -117,7 +117,11 @@
                         <div layout vertical start>
                             <div layout horizontal>
                                 <h1 hero hero-id="person-{{ polymer.var('selectedPerson.id') }}-name">
-                                    {{ polymer.var('selectedPerson.name.complete') }}
+                                    {{ polymer.var('selectedPerson.name.prefix') }}
+                                    {{ polymer.var('selectedPerson.name.first') }}
+                                    {{ polymer.var('selectedPerson.name.second') }}
+                                    {{ polymer.var('selectedPerson.name.last') }}
+                                    {{ polymer.var('selectedPerson.name.suffix') }}
                                 </h1>
                             </div>
                             <div cross-fade>
