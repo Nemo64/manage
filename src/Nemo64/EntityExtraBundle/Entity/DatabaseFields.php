@@ -51,6 +51,18 @@ trait DatabaseFields
     private $createIps;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     * @JMS\Exclude()
+     * @JMS\ReadOnly()
+     * @JMS\AccessType("public_method")
+     *
+     * @Extra\CreateHost()
+     */
+    private $createHost;
+
+    /**
      * @return int|null
      */
     public function getId()
@@ -72,6 +84,14 @@ trait DatabaseFields
     public function getCreateIps()
     {
         return $this->createIps;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreateHost()
+    {
+        return $this->createHost;
     }
 
     /**

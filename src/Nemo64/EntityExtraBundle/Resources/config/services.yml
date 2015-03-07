@@ -11,6 +11,7 @@ services:
 
     nemo64_entity_extra.create_time_listener:
         private: true
+        parent: entity_extra.property_listener
         class: Nemo64\EntityExtraBundle\Listener\EntityCreateTimeListener
         # calls will be added dynamically
         tags:
@@ -19,9 +20,19 @@ services:
 
     nemo64_entity_extra.create_ip_listener:
         private: true
+        parent: entity_extra.property_listener
         class: Nemo64\EntityExtraBundle\Listener\EntityCreateIpListener
         arguments: [@request_stack]
         # calls will be added dynamically
         tags:
             - { name: entity_extra.property_listener, annotation: Nemo64\EntityExtraBundle\Annotation\CreateIp }
+            - { name: doctrine.event_listener, event: onFlush }
+
+    nemo64_entity_extra.create_host_listener:
+        private: true
+        parent: entity_extra.property_listener
+        class: Nemo64\EntityExtraBundle\Listener\EntityCreateHostListener
+        # calls will be added dynamically
+        tags:
+            - { name: entity_extra.property_listener, annotation: Nemo64\EntityExtraBundle\Annotation\CreateHost }
             - { name: doctrine.event_listener, event: onFlush }
