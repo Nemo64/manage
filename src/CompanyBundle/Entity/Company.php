@@ -8,13 +8,13 @@
 
 namespace CompanyBundle\Entity;
 
-use AppBundle\Entity\EntityFields;
-use AppBundle\Entity\GenericName;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Hateoas\Configuration\Annotation as Hateoas;
+use Nemo64\EntityExtraBundle\Entity\DatabaseFields;
+use Nemo64\EntityExtraBundle\Entity\GenericName;
 use PersonBundle\Entity\Person;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -36,7 +36,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Company
 {
-    use EntityFields;
+    use DatabaseFields;
     use GenericName;
 
     /**

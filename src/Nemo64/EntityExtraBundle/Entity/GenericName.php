@@ -2,11 +2,11 @@
 /**
  * Created by PhpStorm.
  * User: marco
- * Date: 28.02.15
- * Time: 17:29
+ * Date: 07.03.15
+ * Time: 16:43
  */
 
-namespace AppBundle\Entity;
+namespace Nemo64\EntityExtraBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;

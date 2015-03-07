@@ -8,13 +8,13 @@
 namespace PersonBundle\Entity;
 
 
-use AppBundle\Entity\EntityFields;
 use CompanyBundle\Entity\Company;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Hateoas\Configuration\Annotation as Hateoas;
+use Nemo64\EntityExtraBundle\Entity\DatabaseFields;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -35,7 +35,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Person
 {
-    use EntityFields;
+    use DatabaseFields;
 
     /**
      * @var Person\Name
@@ -62,7 +62,7 @@ class Person
     /**
      * @var string
      *
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      * @JMS\Expose()
      */
     private $freeText;

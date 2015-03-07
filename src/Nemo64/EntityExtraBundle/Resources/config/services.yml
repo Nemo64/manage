@@ -1,0 +1,11 @@
+services:
+#    nemo64_entity_extra.example:
+#        class: Nemo64\EntityExtraBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+    nemo64_entity_extra.create_time_listener:
+        private: true
+        class: Nemo64\EntityExtraBundle\Listener\EntityCreateTimeListener
+        # calls will be added dynamically
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
