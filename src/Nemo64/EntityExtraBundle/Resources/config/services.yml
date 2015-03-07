@@ -36,3 +36,20 @@ services:
         tags:
             - { name: entity_extra.property_listener, annotation: Nemo64\EntityExtraBundle\Annotation\CreateHost }
             - { name: doctrine.event_listener, event: onFlush }
+
+    nemo64_entity_extra.update_history_listener:
+        private: true
+        parent: entity_extra.property_listener
+        class: Nemo64\EntityExtraBundle\Listener\EntityUpdateHistoryListener
+        tags:
+            - { name: entity_extra.property_listener, annotation: Nemo64\EntityExtraBundle\Annotation\UpdateHistory }
+            - { name: doctrine.event_listener, event: onFlush }
+
+    nemo64_entity_extra.weak_relation_listener:
+        private: true
+        class: Nemo64\EntityExtraBundle\Type\WeakRelationType\WeakRelationListener
+        calls:
+            - [setContainer, [@service_container]]
+        tags:
+            - { name: doctrine.event_listener, event: onWeakRelationSerialize }
+            - { name: doctrine.event_listener, event: onWeakRelationDeserialize }

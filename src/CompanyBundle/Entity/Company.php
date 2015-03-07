@@ -15,6 +15,7 @@ use JMS\Serializer\Annotation as JMS;
 use Hateoas\Configuration\Annotation as Hateoas;
 use Nemo64\EntityExtraBundle\Entity\DatabaseFields;
 use Nemo64\EntityExtraBundle\Entity\GenericName;
+use Nemo64\EntityExtraBundle\Entity\UpdateHistory;
 use PersonBundle\Entity\Person;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -37,6 +38,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Company
 {
     use DatabaseFields;
+    use UpdateHistory;
     use GenericName;
 
     /**

@@ -99,7 +99,11 @@ trait DatabaseFields
      */
     public function __toString()
     {
-        $className = preg_replace('/^.*\\/', '', get_class($this));
-        return "$className:" . $this->getId();
+        try {
+            $className = preg_replace('/^.*\\\\/', '', get_class($this));
+            return "$className:" . $this->getId();
+        } catch (\Exception $e) {
+            return $e->getMessage() . ':' . $e->getTraceAsString();
+        }
     }
 }
