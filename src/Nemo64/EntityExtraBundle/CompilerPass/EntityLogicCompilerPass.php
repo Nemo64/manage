@@ -13,7 +13,7 @@ use Symfony\Component\ClassLoader\ClassMapGenerator;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class EntityFieldLogicCompilerPass implements CompilerPassInterface
+class EntityLogicCompilerPass implements CompilerPassInterface
 {
     /**
      * You can modify the container here before it is dumped to PHP code.
@@ -41,7 +41,7 @@ class EntityFieldLogicCompilerPass implements CompilerPassInterface
             foreach ($classMap as $className => $classFile) {
 
                 $entityReflectionClass = new \ReflectionClass($className);
-                $this->processCreateTimeField($entityReflectionClass, $container);
+                $this->processPropertyListener($entityReflectionClass, $container);
             }
         }
     }
@@ -50,22 +50,35 @@ class EntityFieldLogicCompilerPass implements CompilerPassInterface
      * @param \ReflectionClass $entityReflectionClass
      * @param ContainerBuilder $container
      */
-    protected function processCreateTimeField(\ReflectionClass $entityReflectionClass, ContainerBuilder $container)
+    protected function processPropertyListener(\ReflectionClass $entityReflectionClass, ContainerBuilder $container)
     {
+        static $tagName = 'entity_extra.property_listener';
+
         $annotationReader = $container->get('annotation_reader');
-        $entityCreateTimeListenerDefinition = $container->getDefinition('nemo64_entity_extra.create_time_listener');
 
-        foreach ($entityReflectionClass->getProperties() as $property) {
+        $serviceTagAttributes = $container->findTaggedServiceIds($tagName);
+        foreach ($serviceTagAttributes as $serviceId => $tags) {
+            $serviceDefinition = $container->getDefinition($serviceId);
 
-            static $annotationName = 'Nemo64\EntityExtraBundle\Annotation\CreateTime';
-            $createTimeAnnotation = $annotationReader->getPropertyAnnotation($property, $annotationName);
+            foreach ($tags as $attributes) {
 
-            if ($createTimeAnnotation === null) {
-                continue;
+                if (!isset($attributes['annotation'])) {
+                    throw new \LogicException("The tag '$tagName' requires a 'annotation' attribute.");
+                }
+
+                $annotationName = $attributes['annotation'];
+
+                foreach ($entityReflectionClass->getProperties() as $property) {
+
+                    $annotation = $annotationReader->getPropertyAnnotation($property, $annotationName);
+                    if ($annotation === null) {
+                        continue;
+                    }
+
+                    $arguments = array($entityReflectionClass->name, $property->name);
+                    $serviceDefinition->addMethodCall('addRelatedProperty', $arguments);
+                }
             }
-
-            $arguments = array($entityReflectionClass->name, $property->name);
-            $entityCreateTimeListenerDefinition->addMethodCall('addCreateTimeProperty', $arguments);
         }
     }
 }

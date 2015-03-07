@@ -39,6 +39,18 @@ trait DatabaseFields
     private $createTime;
 
     /**
+     * @var array
+     *
+     * @ORM\Column(type="simple_array")
+     * @JMS\Exclude()
+     * @JMS\ReadOnly()
+     * @JMS\AccessType("public_method")
+     *
+     * @Extra\CreateIp()
+     */
+    private $createIps;
+
+    /**
      * @return int|null
      */
     public function getId()
@@ -52,6 +64,14 @@ trait DatabaseFields
     public function getCreateTime()
     {
         return $this->createTime;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCreateIps()
+    {
+        return $this->createIps;
     }
 
     /**
