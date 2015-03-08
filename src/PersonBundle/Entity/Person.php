@@ -8,14 +8,15 @@
 namespace PersonBundle\Entity;
 
 
-use CompanyBundle\Entity\Company;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Selectable;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Hateoas\Configuration\Annotation as Hateoas;
 use Nemo64\EntityExtraBundle\Entity\DatabaseFields;
 use Nemo64\EntityExtraBundle\Entity\UpdateHistory;
+use PersonBundle\Entity\Person\Employment;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -30,8 +31,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Hateoas\Relation("self", href=@Hateoas\Route(
  *      "get_person", parameters={"person": "expr(object.getId())"}
  * ))
- * @Hateoas\Relation("employedByCompanies", href=@Hateoas\Route(
- *      "get_person_employed", parameters={"person": "expr(object.getId())"}
+ * @Hateoas\Relation("employments", href=@Hateoas\Route(
+ *      "get_person_employments", parameters={"person": "expr(object.getId())"}
  * ))
  */
 class Person
@@ -52,26 +53,18 @@ class Person
     private $name;
 
     /**
-     * @var Collection|Company[]
+     * @var Employment[]|Collection|Selectable
      *
-     * @ORM\ManyToMany(targetEntity="CompanyBundle\Entity\Company", mappedBy="employees")
-     * @ORM\OrderBy({"name": "ASC"})
-     * @JMS\Exclude()
-     * @JMS\AccessType("property")
-     */
-    private $employedByCompanies;
-
-    /**
-     * @var string
+     * @ORM\OneToMany(targetEntity="PersonBundle\Entity\Person\Employment", mappedBy="person", cascade={"ALL"}, orphanRemoval=true)
+     * @JMS\ReadOnly()
      *
-     * @ORM\Column(type="text", nullable=true)
-     * @JMS\Expose()
+     * @Assert\Valid()
      */
-    private $freeText;
+    private $employments;
 
     public function __construct()
     {
-        $this->employedByCompanies = new ArrayCollection();
+        $this->employments = new ArrayCollection();
     }
 
     /**
@@ -91,58 +84,40 @@ class Person
     }
 
     /**
-     * @return Company[]
+     * @return Person\Employment[]
      */
-    public function getEmployedByCompanies()
+    public function getEmployments()
     {
-        return $this->employedByCompanies->toArray();
+        return $this->employments->toArray();
     }
 
     /**
-     * @param Company $company
+     * @param Employment $employment
      * @return bool
      */
-    public function addEmployedByCompany(Company $company)
+    public function addEmployment(Employment $employment)
     {
-        if ($this->employedByCompanies->contains($company)) {
+        if ($employment->getPerson() !== $this) {
+            throw new \RuntimeException("$employment does not belong to $this");
+        }
+
+        if ($this->employments->contains($employment)) {
             return false;
         }
 
-        if (!$this->employedByCompanies->add($company)) {
+        if (!$this->employments->add($employment)) {
             return false;
         }
 
-        $company->addEmployee($this);
         return true;
     }
 
     /**
-     * @param Company $company
+     * @param Employment $employment
      * @return bool
      */
-    public function removeEmployedByCompany(Company $company)
+    public function removeEmployment(Employment $employment)
     {
-        if (!$this->employedByCompanies->removeElement($company)) {
-            return false;
-        }
-
-        $company->removeEmployee($this);
-        return true;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFreeText()
-    {
-        return $this->freeText;
-    }
-
-    /**
-     * @param string $freeText
-     */
-    public function setFreeText($freeText)
-    {
-        $this->freeText = $freeText;
+        return $this->employments->removeElement($employment);
     }
 }

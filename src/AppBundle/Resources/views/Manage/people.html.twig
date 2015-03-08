@@ -128,17 +128,13 @@
                                 Firmen:
                                 <ul>
                                     <template
-                                            repeat="{{ polymer.varIn('company', 'selectedPerson.employedByCompanies') }}">
-                                        <li>{{ polymer.var('company.name') }}</li>
+                                            repeat="{{ polymer.varIn('employment', 'selectedPerson.employments') }}">
+                                        <li>{{ polymer.var('employment.company.name') }}</li>
                                     </template>
                                 </ul>
                             </div>
                             <form cross-fade layout vertical
                                   action="" on-submit="{{ polymer.var('submitPerson') }}">
-                                <div>
-                                    <paper-input label="Freitext"
-                                                 value="{{ polymer.var('selectedPerson.freeText') }}"></paper-input>
-                                </div>
                                 <div>
                                     <paper-input label="Prefix"
                                                  value="{{ polymer.var('selectedPerson.name.prefix') }}"></paper-input>

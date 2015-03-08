@@ -10,6 +10,7 @@ namespace CompanyBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Selectable;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Hateoas\Configuration\Annotation as Hateoas;
@@ -31,8 +32,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Hateoas\Relation("self", href=@Hateoas\Route(
  *      "get_company", parameters={"company": "expr(object.getId())"}
  * ))
- * @Hateoas\Relation("employees", href=@Hateoas\Route(
- *      "get_company_employees", parameters={"company": "expr(object.getId())"}
+ * @Hateoas\Relation("employments", href=@Hateoas\Route(
+ *      "get_company_employments", parameters={"company": "expr(object.getId())"}
  * ))
  */
 class Company
@@ -42,57 +43,55 @@ class Company
     use GenericName;
 
     /**
-     * @var Collection|Person[]
+     * @var Person\Employment[]|Collection|Selectable
      *
-     * @ORM\ManyToMany(targetEntity="PersonBundle\Entity\Person", inversedBy="employedByCompanies")
-     * @ORM\OrderBy({"name.complete": "ASC"})
-     * @JMS\Exclude()
-     * @JMS\AccessType("property")
+     * @ORM\OneToMany(targetEntity="PersonBundle\Entity\Person\Employment", mappedBy="company", cascade={"ALL"}, orphanRemoval=true)
+     * @JMS\ReadOnly()
+     *
+     * @Assert\Valid()
      */
-    private $employees;
+    private $employments;
 
     public function __construct()
     {
-        $this->employees = new ArrayCollection();
+        $this->employments = new ArrayCollection();
     }
 
     /**
-     * @return Person[]
+     * @return Person\Employment[]
      */
-    public function getEmployees()
+    public function getEmployments()
     {
-        return $this->employees->toArray();
+        return $this->employments->toArray();
     }
 
     /**
-     * @param Person $person
+     * @param Person\Employment $employment
      * @return bool
      */
-    public function addEmployee(Person $person)
+    public function addEmployment(Person\Employment $employment)
     {
-        if ($this->employees->contains($person)) {
+        if ($employment->getCompany() !== $this) {
+            throw new \RuntimeException("$employment does not belong to $this");
+        }
+
+        if ($this->employments->contains($employment)) {
             return false;
         }
 
-        if (!$this->employees->add($person)) {
+        if (!$this->employments->add($employment)) {
             return false;
         }
 
-        $person->addEmployedByCompany($this);
         return true;
     }
 
     /**
-     * @param Person $person
+     * @param Person\Employment $employment
      * @return bool
      */
-    public function removeEmployee(Person $person)
+    public function removeEmployment(Person\Employment $employment)
     {
-        if (!$this->employees->removeElement($person)) {
-            return false;
-        }
-
-        $person->removeEmployedByCompany($this);
-        return true;
+        return $this->employments->removeElement($employment);
     }
 }

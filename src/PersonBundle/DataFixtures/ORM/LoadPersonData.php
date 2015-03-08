@@ -1032,10 +1032,10 @@ class LoadPersonData implements FixtureInterface, DependentFixtureInterface
             $person = new Person();
             $person->setName(Person\Name::fromString($name));
 
-            $person->addEmployedByCompany($companies[$index % count($companies)]);
+            new Person\Employment($person, $companies[$index % count($companies)]);
             // every so often add another company
             if ($index % 23 === 0) {
-                $person->addEmployedByCompany($companies[$index / 23 % count($companies)]);
+                new Person\Employment($person, $companies[$index / 23 % count($companies)]);
             }
 
             $manager->persist($person);

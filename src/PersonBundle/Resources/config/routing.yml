@@ -1,3 +1,7 @@
 person:
     type:     rest
     resource: @PersonBundle/Controller/PersonController.php
+
+employment:
+    type:     rest
+    resource: @PersonBundle/Controller/Person/EmploymentController.php
